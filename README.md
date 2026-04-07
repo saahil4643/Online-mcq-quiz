@@ -38,7 +38,7 @@ python manage.py runserver
 
 - `api/index.py` (serverless WSGI entry)
 - `vercel.json` (routes + Python runtime)
-- `static/` (root static assets served directly by Vercel)
+- `public/static/` (served directly by Vercel)
 
 ### 1) Push your code to GitHub
 
@@ -54,7 +54,7 @@ Commit and push this project to a GitHub repo.
 
 Click deploy. Vercel will use `vercel.json` and run Django through `api/index.py`.
 
-If you change any CSS/JS under `app/static/app/`, copy the updated files to `static/app/` before pushing so Vercel serves the latest assets.
+If you change any CSS/JS under `app/static/app/`, copy the updated files to `public/static/app/` before pushing so Vercel serves the latest assets.
 
 ## Important notes about SQLite on Vercel
 
