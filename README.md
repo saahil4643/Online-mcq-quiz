@@ -38,6 +38,7 @@ python manage.py runserver
 
 - `api/index.py` (serverless WSGI entry)
 - `vercel.json` (routes + Python runtime)
+- `static/` (root static assets served directly by Vercel)
 
 ### 1) Push your code to GitHub
 
@@ -49,17 +50,11 @@ Commit and push this project to a GitHub repo.
 - `Add New` -> `Project`
 - Import your GitHub repo
 
-### 3) Set environment variables in Vercel
-
-Add these in Project Settings -> Environment Variables:
-
-- `SECRET_KEY` = any long random string
-- `DEBUG` = `False`
-- `ALLOWED_HOSTS` = `.vercel.app,127.0.0.1,localhost`
-
-### 4) Deploy
+### 3) Deploy
 
 Click deploy. Vercel will use `vercel.json` and run Django through `api/index.py`.
+
+If you change any CSS/JS under `app/static/app/`, copy the updated files to `static/app/` before pushing so Vercel serves the latest assets.
 
 ## Important notes about SQLite on Vercel
 
