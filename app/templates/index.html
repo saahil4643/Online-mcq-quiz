@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — Test Your Knowledge</title>
+  <meta name="description" content="Challenge yourself with topic-based quizzes, track your performance, and sharpen your skills." />
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'app/css/home.css' %}" />
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+    Django: swap static links for named URL patterns
+    Authenticated state: use Django conditionals if needed
+     ============================================================ -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+
+      <!-- Logo -->
+      <a href="{% url 'home' %}" class="navbar__logo" aria-label="QuizMaster Home">
+        <div class="navbar__logo-icon" aria-hidden="true">⚡</div>
+        Quiz<span>Master</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="navbar__nav" role="navigation" aria-label="Main navigation">
+        <a href="{% url 'home' %}" class="navbar__link active">Home</a>
+        <a href="{% url 'quiz' %}" class="navbar__link">Quizzes</a>
+        <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="navbar__actions">
+        <a href="{% url 'auth' %}" class="btn btn-ghost btn-sm">Log In</a>
+        <a href="{% url 'auth' %}#register" class="btn btn-primary btn-sm">Sign Up Free</a>
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button class="navbar__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav class="navbar__mobile" aria-label="Mobile navigation">
+      <a href="{% url 'home' %}" class="navbar__link">Home</a>
+      <a href="{% url 'quiz' %}" class="navbar__link">Quizzes</a>
+      <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+      <div class="navbar__actions">
+        <a href="{% url 'auth' %}" class="btn btn-ghost">Log In</a>
+        <a href="{% url 'auth' %}#register" class="btn btn-primary">Sign Up Free</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
+<main>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__blob2" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero__content">
+
+      <!-- Left: Text -->
+      <div class="hero__text">
+        <div class="hero__eyebrow" aria-label="New platform">
+          ✦ New Generation Learning Platform
+        </div>
+
+        <h1 class="hero__title" id="hero-title">
+          Test Your<br><em>Knowledge</em><br>Level Up Skills
+        </h1>
+
+        <p class="hero__sub">
+          Challenge yourself with expertly crafted quizzes across 20+ topics. 
+          Get instant results, track your progress, and become the best version of yourself.
+        </p>
+
+        <div class="hero__cta">
+          <a href="{% url 'quiz' %}" class="btn btn-primary btn-lg">
+            ⚡ Start Quiz Now
+          </a>
+          <a href="{% url 'dashboard' %}" class="btn btn-ghost btn-lg">
+            Go to Dashboard
+          </a>
+          <a href="{% url 'auth' %}#register" class="btn btn-outline btn-lg">
+            Create Free Account
+          </a>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-num">50K+</span>
+            <span class="hero__stat-label">Students</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">200+</span>
+            <span class="hero__stat-label">Quiz Topics</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">98%</span>
+            <span class="hero__stat-label">Satisfaction</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Mockup card -->
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__card-mockup">
+          <div class="mockup__timer">⏱ 14:32</div>
+
+          <div class="mockup__header">
+            <span class="badge badge-primary">Computer Basics Quiz</span>
+            <span class="mockup__progress-text">Q 3 of 10</span>
+          </div>
+
+          <div class="mockup__question">
+            What does CPU stand for?
+          </div>
+
+          <div class="progress-bar" style="margin-bottom:20px">
+            <div class="progress-bar__fill" style="width:30%"></div>
+          </div>
+
+          <div class="mockup__options">
+            <div class="mockup__option">
+              <span class="mockup__dot"></span> Central Processing Unit
+            </div>
+            <div class="mockup__option selected">
+              <span class="mockup__dot"></span> Computer Personal Unit
+            </div>
+            <div class="mockup__option">
+              <span class="mockup__dot"></span> Central Program Utility
+            </div>
+            <div class="mockup__option correct">
+              <span class="mockup__dot"></span> Control Processing Unit
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating badges -->
+        <div class="hero__badge badge--left">
+          <span class="icon">🎯</span>
+          <span><strong>92%</strong> Accuracy</span>
+        </div>
+        <div class="hero__badge badge--top">
+          <span class="icon">🏆</span>
+          <span>Top <strong>10%</strong></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FEATURES SECTION
+     ============================================================ -->
+<section class="features" aria-labelledby="features-title">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge badge-primary" style="margin-bottom:12px">Why Choose Us</div>
+      <h2 id="features-title">Everything You Need to Excel</h2>
+      <p>Powerful features designed to make learning effective, engaging, and measurable.</p>
+    </div>
+
+    <div class="features__grid">
+
+      <!-- Feature cards — Django: populate dynamically from /api/features/ if needed -->
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--teal" aria-hidden="true">⚡</div>
+        <h3>Instant Results</h3>
+        <p>Get your score and detailed feedback the moment you submit. No waiting — see exactly what you got right or wrong.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--amber" aria-hidden="true">📚</div>
+        <h3>Multiple Categories</h3>
+        <p>From Python & Django to Data Science, Mathematics, and more — pick your topic and get started immediately.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--purple" aria-hidden="true">📊</div>
+        <h3>Performance Tracking</h3>
+        <p>Your personal dashboard tracks every quiz attempt, showing trends, weak areas, and your improvement over time.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--blue" aria-hidden="true">⏱</div>
+        <h3>Timed Challenges</h3>
+        <p>Practice under pressure with countdown timers. Simulate real exam conditions and build confidence in your responses.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--green" aria-hidden="true">🎯</div>
+        <h3>Smart Question Bank</h3>
+        <p>Hundreds of carefully curated questions reviewed by subject matter experts to ensure accuracy and relevance.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-card__icon feature-card__icon--red" aria-hidden="true">🔥</div>
+        <h3>Daily Streak Rewards</h3>
+        <p>Build a learning habit. Maintain your daily streak, unlock achievements, and climb the leaderboard.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CATEGORIES STRIP
+    Django: render categories dynamically when wired to the backend
+     ============================================================ -->
+<section class="categories" aria-label="Quiz categories">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:28px">
+      <h2>Browse by Category</h2>
+    </div>
+    <div class="categories__list" role="list">
+      <button class="category-pill active" role="listitem">All</button>
+      <button class="category-pill" role="listitem">Python</button>
+      <button class="category-pill" role="listitem">Django</button>
+      <button class="category-pill" role="listitem">JavaScript</button>
+      <button class="category-pill" role="listitem">HTML & CSS</button>
+      <button class="category-pill" role="listitem">Databases</button>
+      <button class="category-pill" role="listitem">Data Science</button>
+      <button class="category-pill" role="listitem">Algorithms</button>
+      <button class="category-pill" role="listitem">System Design</button>
+      <button class="category-pill" role="listitem">DevOps</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA BANNER
+     ============================================================ -->
+<section class="container">
+  <div class="cta-banner" aria-labelledby="cta-title">
+    <div class="badge badge-accent" style="margin-bottom:14px">Get Started Today — It's Free</div>
+    <h2 id="cta-title">Ready to Challenge Yourself?</h2>
+    <p>Join 50,000+ students already sharpening their skills on QuizMaster.</p>
+    <a href="{% url 'auth' %}#register" class="btn btn-primary btn-lg">
+      Create Free Account →
+    </a>
+  </div>
+</section>
+</main>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href="{% url 'home' %}" class="navbar__logo" style="margin-bottom:12px; display:inline-flex">
+          <div class="navbar__logo-icon">⚡</div>
+          Quiz<span>Master</span>
+        </a>
+        <p>The modern platform for students who want to test, track, and improve their knowledge one quiz at a time.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Platform</h4>
+        <a href="{% url 'quiz' %}">Take a Quiz</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="#">Leaderboard</a>
+        <a href="#">Categories</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2024 QuizMaster. All rights reserved.</span>
+      <span>Built with ♥ for learners everywhere</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast container (injected by JS) -->
+<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="{% static 'app/js/main.js' %}"></script>
+
+<!-- Category pill active toggle -->
+<script>
+  document.querySelectorAll('.category-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

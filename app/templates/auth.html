@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — Sign In / Register</title>
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'app/css/pages.css' %}" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <a href="{% url 'home' %}" class="navbar__logo">
+        <div class="navbar__logo-icon">⚡</div>
+        Quiz<span>Master</span>
+      </a>
+      <div class="navbar__actions">
+        <a href="{% url 'home' %}" class="btn btn-ghost btn-sm">← Back to Home</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">Dashboard</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     AUTH PAGE
+     Django: This form should POST to:
+       Login:    /api/auth/login/    (or Django's built-in login view)
+       Register: /api/auth/register/
+     Add {% csrf_token %} inside <form> for Django forms.
+     ============================================================ -->
+<main class="auth-page" id="auth-page">
+
+  <div class="auth-box" role="main">
+
+    <!-- Logo -->
+    <div class="auth-box__logo" aria-hidden="true">
+      <div class="logo-icon">⚡</div>
+      QuizMaster
+    </div>
+
+    <!-- Tab toggle -->
+    <div class="auth-tabs" role="tablist" aria-label="Authentication options">
+      <button class="auth-tab active" role="tab" aria-selected="true"
+              aria-controls="login-panel"    data-tab="login-panel"    id="tab-login">
+        Sign In
+      </button>
+      <button class="auth-tab"        role="tab" aria-selected="false"
+              aria-controls="register-panel" data-tab="register-panel" id="tab-register">
+        Register
+      </button>
+    </div>
+
+
+    <!-- ==================== LOGIN PANEL ==================== -->
+    <div class="auth-panel active" id="login-panel" role="tabpanel" aria-labelledby="tab-login">
+      <h2>Welcome back 👋</h2>
+      <p>Sign in to continue your learning journey.</p>
+
+      <!--
+        Django integration:
+        <form method="POST" action="your login endpoint here">{% csrf_token %}
+        Replace id="login-form" if using Django form rendering.
+      -->
+      <form class="auth-form" id="login-form" novalidate autocomplete="on"
+            data-api-endpoint="/api/auth/login/">
+
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input
+            type="email"
+            class="form-input"
+            id="login-email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+          <span class="form-error" id="err-login-email" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              class="form-input"
+              id="login-password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="input-wrapper__toggle" aria-label="Toggle password visibility">👁</button>
+          </div>
+          <span class="form-error" id="err-login-password" role="alert"></span>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-top:-8px">
+          <a href="#" style="font-size:.85rem; color:var(--clr-primary)">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="login-submit">
+          Sign In →
+        </button>
+
+      </form>
+
+      <div class="auth-box__footer">
+        Don't have an account?
+        <a href="#" onclick="document.querySelector('[data-tab=register-panel]').click(); return false;">
+          Create one free
+        </a>
+      </div>
+    </div>
+
+
+    <!-- ==================== REGISTER PANEL ==================== -->
+    <div class="auth-panel" id="register-panel" role="tabpanel" aria-labelledby="tab-register">
+      <h2>Join QuizMaster 🚀</h2>
+      <p>Create your free account and start learning today.</p>
+
+      <!--
+        Django integration:
+        <form method="POST" action="your register endpoint here">{% csrf_token %}
+      -->
+      <form class="auth-form" id="register-form" novalidate autocomplete="on"
+            data-api-endpoint="/api/auth/register/">
+
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input
+            type="text"
+            class="form-input"
+            id="reg-name"
+            name="name"
+            placeholder="Alex Johnson"
+            autocomplete="name"
+            required
+          />
+          <span class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input
+            type="email"
+            class="form-input"
+            id="reg-email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+          <span class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              class="form-input"
+              id="reg-password"
+              name="password"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              required
+              minlength="8"
+            />
+            <button type="button" class="input-wrapper__toggle" aria-label="Toggle password visibility">👁</button>
+          </div>
+          <span class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-confirm">Confirm Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              class="form-input"
+              id="reg-confirm"
+              name="confirm_password"
+              placeholder="Re-enter password"
+              autocomplete="new-password"
+              required
+            />
+            <button type="button" class="input-wrapper__toggle" aria-label="Toggle password visibility">👁</button>
+          </div>
+          <span class="form-error" role="alert"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="register-submit">
+          Create Account →
+        </button>
+
+        <p style="font-size:.78rem; color:var(--clr-muted); text-align:center; margin-top:-6px">
+          By registering you agree to our
+          <a href="#" style="color:var(--clr-primary)">Terms</a> &
+          <a href="#" style="color:var(--clr-primary)">Privacy Policy</a>
+        </p>
+
+      </form>
+
+      <div class="auth-box__footer">
+        Already have an account?
+        <a href="#" onclick="document.querySelector('[data-tab=login-panel]').click(); return false;">
+          Sign in
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /.auth-box -->
+</main>
+
+<div class="toast-container" aria-live="polite"></div>
+
+<script src="{% static 'app/js/main.js' %}"></script>
+<script src="{% static 'app/js/auth.js' %}"></script>
+
+</body>
+</html>

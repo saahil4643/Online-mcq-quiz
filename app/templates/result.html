@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — Your Result</title>
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'app/css/pages.css' %}" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <a href="{% url 'home' %}" class="navbar__logo">
+        <div class="navbar__logo-icon">⚡</div>
+        Quiz<span>Master</span>
+      </a>
+      <nav class="navbar__nav">
+        <a href="{% url 'home' %}" class="navbar__link">Home</a>
+        <a href="{% url 'quiz' %}" class="navbar__link">Quiz</a>
+        <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">Dashboard</a>
+        <a href="{% url 'auth' %}" class="btn btn-ghost btn-sm">Log In</a>
+        <a href="{% url 'auth' %}#register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+      <button class="navbar__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navbar__mobile">
+      <a href="{% url 'home' %}" class="navbar__link">Home</a>
+      <a href="{% url 'quiz' %}" class="navbar__link">Quiz</a>
+      <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     RESULT PAGE
+     Django integration:
+       - Fetch attempt data: GET /api/quiz-attempts/{attempt_id}/
+       - score, correct, total come from backend
+     ============================================================ -->
+<main class="result-page" id="result-page">
+  <div class="container" style="max-width:760px">
+
+    <!-- Hero score ring -->
+    <div class="result-hero" aria-labelledby="result-title">
+
+      <!-- SVG Ring Chart -->
+      <div class="result-hero__ring" role="img" aria-label="Score ring chart">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <circle class="ring-bg"   cx="80" cy="80" r="70"/>
+          <circle class="ring-fill" cx="80" cy="80" r="70" id="score-ring"/>
+        </svg>
+        <div class="result-hero__score">
+          <!-- Django: {{ attempt.score }}% -->
+          <span class="result-hero__score-num" id="score-num">—%</span>
+          <span class="result-hero__score-label">Score</span>
+        </div>
+      </div>
+
+      <h2 id="result-title">Loading…</h2>
+      <p id="result-sub"></p>
+      <div class="result-grade" id="result-grade"></div>
+    </div>
+
+
+    <!-- Stat Cards -->
+    <div class="result-stats" role="list">
+      <div class="result-stat" role="listitem">
+        <div class="result-stat__icon" aria-hidden="true">📝</div>
+        <!-- Django: {{ attempt.total_questions }} -->
+        <div class="result-stat__num" id="stat-total">—</div>
+        <div class="result-stat__label">Total Questions</div>
+      </div>
+      <div class="result-stat" role="listitem">
+        <div class="result-stat__icon" aria-hidden="true">✅</div>
+        <!-- Django: {{ attempt.correct_count }} -->
+        <div class="result-stat__num" id="stat-correct" style="color:var(--clr-success)">—</div>
+        <div class="result-stat__label">Correct</div>
+      </div>
+      <div class="result-stat" role="listitem">
+        <div class="result-stat__icon" aria-hidden="true">❌</div>
+        <!-- Django: {{ attempt.incorrect_count }} -->
+        <div class="result-stat__num" id="stat-incorrect" style="color:var(--clr-danger)">—</div>
+        <div class="result-stat__label">Incorrect</div>
+      </div>
+      <div class="result-stat" role="listitem">
+        <div class="result-stat__icon" aria-hidden="true">⏱</div>
+        <!-- Django: display time taken as a formatted value -->
+        <div class="result-stat__num" id="stat-time" style="font-size:1.3rem">—</div>
+        <div class="result-stat__label">Time Taken</div>
+      </div>
+    </div>
+
+
+    <!-- Breakdown bars -->
+    <div class="result-breakdown">
+      <h3>Answer Breakdown</h3>
+
+      <div class="breakdown-bar">
+        <div class="quiz-progress__info">
+          <span class="text-muted">Correct</span>
+          <span id="lbl-correct" style="color:var(--clr-success);font-weight:600">—</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar__fill" id="bar-correct" style="width:0;background:var(--clr-success)"></div>
+        </div>
+      </div>
+
+      <div class="breakdown-bar">
+        <div class="quiz-progress__info">
+          <span class="text-muted">Incorrect</span>
+          <span id="lbl-incorrect" style="color:var(--clr-danger);font-weight:600">—</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar__fill" id="bar-incorrect" style="width:0;background:var(--clr-danger)"></div>
+        </div>
+      </div>
+
+      <div class="breakdown-bar">
+        <div class="quiz-progress__info">
+          <span class="text-muted">Unanswered</span>
+          <span id="lbl-unanswered" style="color:var(--clr-muted);font-weight:600">—</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar__fill" id="bar-unanswered" style="width:0;background:var(--clr-muted)"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Action Buttons -->
+    <div class="result-actions">
+      <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+        📊 Go to Dashboard
+      </a>
+      <a href="{% url 'quiz' %}" class="btn btn-outline btn-lg">
+        🔄 Retake Quiz
+      </a>
+      <a href="{% url 'home' %}" class="btn btn-ghost">
+        ← Home
+      </a>
+    </div>
+
+
+    <!-- Questions Review -->
+    <div class="result-questions-review" style="margin-top:40px">
+      <div class="review-header">
+        <h3>Question Review</h3>
+        <span class="badge badge-muted">Click to expand</span>
+      </div>
+      <!-- Django: render question review dynamically when wired to the backend -->
+      <div id="review-wrap">
+        <!-- Populated by pages.js -->
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast-container" aria-live="polite"></div>
+
+<script src="{% static 'app/js/main.js' %}"></script>
+<script src="{% static 'app/js/pages.js' %}"></script>
+
+</body>
+</html>

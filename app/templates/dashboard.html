@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — Dashboard</title>
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'app/css/pages.css' %}" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <a href="{% url 'home' %}" class="navbar__logo">
+        <div class="navbar__logo-icon">⚡</div>
+        Quiz<span>Master</span>
+      </a>
+      <nav class="navbar__nav">
+        <a href="{% url 'home' %}" class="navbar__link">Home</a>
+        <a href="{% url 'quiz' %}" class="navbar__link">Quiz</a>
+        <a href="{% url 'dashboard' %}" class="navbar__link active">Dashboard</a>
+      </nav>
+      <div class="navbar__actions">
+        <!-- Django: if user.is_authenticated show logout -->
+        <span class="badge badge-primary" style="padding:6px 14px">
+          <!-- Django: {{ user.first_name }} -->
+          <span data-user-name>Alex</span>
+        </span>
+        <button onclick="Auth.logout()" class="btn btn-ghost btn-sm">Log Out</button>
+      </div>
+      <button class="navbar__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navbar__mobile">
+      <a href="{% url 'home' %}" class="navbar__link">Home</a>
+      <a href="{% url 'quiz' %}" class="navbar__link">Quiz</a>
+      <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+      <div class="navbar__actions">
+        <button onclick="Auth.logout()" class="btn btn-ghost btn-sm">Log Out</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     DASHBOARD PAGE
+     Django integration:
+       - User data: {{ request.user }}
+       - Attempts: GET /api/quiz-attempts/?user={{ request.user.id }}
+       - Overview stats computed server-side or via API
+     ============================================================ -->
+<main class="dashboard-page" id="dashboard-page">
+  <div class="container">
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="dashboard-header__greeting">
+        <!-- Django: Good morning/afternoon/evening based on server time -->
+        <small id="greeting-time">Good morning</small>
+        <h1>
+          Welcome back,
+          <!-- Django: {{ request.user.first_name }}! -->
+          <span data-user-name>Alex</span>! 👋
+        </h1>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px">
+        <!-- Django: {{ request.user.first_name|slice:":1"|upper }} -->
+        <div class="dashboard-avatar" data-user-avatar aria-label="User avatar">A</div>
+        <a href="{% url 'quiz' %}" class="btn btn-primary">
+          ⚡ Start New Quiz
+        </a>
+      </div>
+    </div>
+
+
+    <!-- Overview Stats -->
+    <!-- Django: computed from queryset aggregation -->
+    <div class="dashboard-overview" role="list">
+
+      <div class="overview-card" role="listitem">
+        <div class="overview-card__top">
+          <div class="overview-card__icon feature-card__icon--teal" aria-hidden="true">📝</div>
+          <span class="badge badge-success" style="font-size:.72rem">↑ +3</span>
+        </div>
+        <!-- Django: {{ stats.total_attempts }} -->
+        <div class="overview-card__num" id="stat-attempts">—</div>
+        <div class="overview-card__label">Total Quizzes</div>
+        <div class="overview-card__trend up">↑ 3 this week</div>
+      </div>
+
+      <div class="overview-card" role="listitem">
+        <div class="overview-card__top">
+          <div class="overview-card__icon feature-card__icon--amber" aria-hidden="true">🎯</div>
+        </div>
+        <!-- Django: {{ stats.avg_score }}% -->
+        <div class="overview-card__num" id="stat-avg">—</div>
+        <div class="overview-card__label">Avg Score</div>
+        <div class="overview-card__trend up">↑ +5% vs last week</div>
+      </div>
+
+      <div class="overview-card" role="listitem">
+        <div class="overview-card__top">
+          <div class="overview-card__icon feature-card__icon--purple" aria-hidden="true">🏆</div>
+        </div>
+        <!-- Django: {{ stats.best_score }}% -->
+        <div class="overview-card__num" id="stat-best">—</div>
+        <div class="overview-card__label">Best Score</div>
+        <div class="overview-card__trend up">Python Basics</div>
+      </div>
+
+      <div class="overview-card" role="listitem">
+        <div class="overview-card__top">
+          <div class="overview-card__icon feature-card__icon--red" aria-hidden="true">🔥</div>
+        </div>
+        <!-- Django: {{ stats.streak }} days -->
+        <div class="overview-card__num" id="stat-streak">—</div>
+        <div class="overview-card__label">Day Streak</div>
+        <div class="overview-card__trend up">Keep it up!</div>
+      </div>
+
+    </div>
+
+
+    <!-- Main Grid: Table + Sidebar -->
+    <div class="dashboard-grid">
+
+      <!-- History Table -->
+      <div class="table-card">
+        <div class="table-card__header">
+          <h3>Quiz History</h3>
+          <span class="badge badge-muted">All attempts</span>
+        </div>
+
+        <!--
+          Django: render attempts dynamically when wired to the backend
+          Replace tbody content with template tags.
+          data-attempt-id="{{ attempt.id }}" for detail links.
+        -->
+        <table class="quiz-table" id="history-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Quiz Name</th>
+              <th>Correct</th>
+              <th>Score</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <!-- Populated by pages.js -->
+            <tr>
+              <td colspan="6" style="text-align:center;color:var(--clr-muted);padding:32px">
+                Loading history…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar" aria-label="Stats sidebar">
+
+        <!-- Score Trend Mini Chart -->
+        <div class="widget">
+          <h3>Score Trend</h3>
+          <div class="mini-chart" id="mini-chart" aria-label="Bar chart of recent scores"></div>
+          <div class="mini-chart-labels" id="mini-chart-labels"></div>
+        </div>
+
+        <!-- Category Performance -->
+        <div class="widget">
+          <h3>By Category</h3>
+          <div class="cat-list" id="cat-list">
+            <!-- Populated by pages.js -->
+          </div>
+        </div>
+
+        <!-- Streak Widget -->
+        <div class="widget">
+          <h3>Daily Streak</h3>
+          <div class="streak-display">
+            <div class="streak-display__fire" aria-hidden="true">🔥</div>
+            <div class="streak-display__num">5</div>
+            <div class="streak-display__label">Days in a row</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="widget" style="display:flex;flex-direction:column;gap:10px">
+          <h3>Quick Actions</h3>
+          <a href="{% url 'quiz' %}" class="btn btn-primary btn-full">⚡ Start New Quiz</a>
+          <a href="{% url 'home' %}" class="btn btn-ghost btn-full">Browse Categories</a>
+        </div>
+
+      </aside>
+    </div><!-- /.dashboard-grid -->
+
+  </div>
+</main>
+
+<div class="toast-container" aria-live="polite"></div>
+
+<script src="{% static 'app/js/main.js' %}"></script>
+<script src="{% static 'app/js/pages.js' %}"></script>
+
+<script>
+  // Greeting by time of day
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  const el = document.getElementById('greeting-time');
+  if (el) el.textContent = greet + ' ⭐';
+</script>
+
+</body>
+</html>

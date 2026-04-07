@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster — {{ quiz.title|default:'Computer Basics' }} Quiz</title>
+  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'app/css/pages.css' %}" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <a href="{% url 'home' %}" class="navbar__logo">
+        <div class="navbar__logo-icon">⚡</div>
+        Quiz<span>Master</span>
+      </a>
+
+      <nav class="navbar__nav">
+        <a href="{% url 'home' %}" class="navbar__link">Home</a>
+        <a href="{% url 'quiz' %}" class="navbar__link active">Quiz</a>
+        <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a href="{% url 'auth' %}" class="btn btn-ghost btn-sm">Log In</a>
+        <a href="{% url 'auth' %}#register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+
+      <button class="navbar__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navbar__mobile">
+      <a href="{% url 'home' %}" class="navbar__link">Home</a>
+      <a href="{% url 'quiz' %}" class="navbar__link">Quiz</a>
+      <a href="{% url 'dashboard' %}" class="navbar__link">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ============================================================
+     QUIZ PAGE
+     Django integration:
+       - Quiz data comes from: GET /api/quizzes/{quiz_id}/questions/
+       - On submit: POST /api/quiz-attempts/ with answers + quiz_id
+       - Timer state managed client-side only
+     ============================================================ -->
+<main class="quiz-page" id="quiz-page" data-quiz-slug="{{ quiz.slug|default:'computer-basics' }}" data-quiz-title="{{ quiz.title|default:'Computer Basics' }}">
+  <div class="container" style="max-width:780px">
+
+    <!-- Quiz Header -->
+    <div class="quiz-header">
+      <div class="quiz-header__meta">
+        <h2>{{ quiz.title|default:'Computer Basics' }}</h2>
+        <span>Beginner · 10 Questions · 15 min</span>
+      </div>
+
+      <!-- Timer -->
+      <div class="quiz-timer" id="quiz-timer" role="timer" aria-live="off" aria-label="Time remaining">
+        <span class="quiz-timer__icon" aria-hidden="true">⏱</span>
+        <span class="quiz-timer__display" id="timer-display">15:00</span>
+      </div>
+    </div>
+
+
+    <!-- Progress Bar -->
+    <div class="quiz-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="10">
+      <div class="quiz-progress__info">
+        <span class="quiz-progress__count" id="progress-count">Question 1 of 10</span>
+        <span class="quiz-progress__pct"   id="progress-pct">0 answered</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-bar__fill" id="quiz-progress-bar" style="width:10%"></div>
+      </div>
+
+      <!-- Question Navigation Dots -->
+      <div class="quiz-dots" id="quiz-dots" role="navigation" aria-label="Question navigation"></div>
+    </div>
+
+
+    <!-- Question Card -->
+    <div class="quiz-card" id="quiz-card" role="region" aria-labelledby="question-num">
+      <div class="quiz-card__num" id="question-num">Question 1</div>
+      <h2 class="quiz-card__question" id="question-text">Loading question…</h2>
+
+      <!--
+        Options container.
+        Each .quiz-option is a <button> for accessibility.
+        Django: data-question-id and data-option-id are set by JS from quizData.
+      -->
+      <div class="quiz-options" id="options-wrap" role="group" aria-label="Answer options">
+        <!-- Populated by quiz.js -->
+      </div>
+    </div>
+
+
+    <!-- Navigation Buttons -->
+    <div class="quiz-nav">
+      <div class="quiz-nav__left">
+        <button class="btn btn-ghost" id="btn-prev" disabled aria-label="Previous question">
+          ← Previous
+        </button>
+      </div>
+      <div class="quiz-nav__right">
+        <button class="btn btn-outline" id="btn-next" aria-label="Next question">
+          Next →
+        </button>
+        <button class="btn btn-primary" id="btn-submit" style="display:none" aria-label="Submit quiz">
+          Submit Quiz ✓
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /.container -->
+</main>
+
+
+<!-- ============================================================
+     SUBMIT CONFIRMATION MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="modal-overlay" role="dialog"
+     aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal__icon" aria-hidden="true">🤔</div>
+    <h3 id="modal-title">Submit Quiz?</h3>
+    <p id="modal-msg">Are you ready to submit your answers?</p>
+    <div class="modal__actions">
+      <button class="btn btn-ghost"    id="modal-cancel">  Keep Going</button>
+      <button class="btn btn-primary"  id="modal-confirm"> Yes, Submit!</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" aria-live="polite"></div>
+
+<script src="{% static 'app/js/main.js' %}"></script>
+<script src="{% static 'app/js/quiz.js' %}"></script>
+
+</body>
+</html>
