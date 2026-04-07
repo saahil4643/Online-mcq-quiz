@@ -1,12 +1,10 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QuizMaster — Your Result</title>
-  <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'app/css/pages.css' %}" />
+  <style>{{ inline_styles|safe }}</style>
 </head>
 <body>
 
@@ -168,8 +166,7 @@
 
 <div class="toast-container" aria-live="polite"></div>
 
-<script src="{% static 'app/js/main.js' %}"></script>
-<script src="{% static 'app/js/pages.js' %}"></script>
+<script>{{ inline_scripts|safe }}</script>
 
 </body>
 </html>

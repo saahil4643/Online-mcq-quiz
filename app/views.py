@@ -1,28 +1,57 @@
+from pathlib import Path
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from .models import Quiz
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSET_DIR = BASE_DIR / 'app' / 'static' / 'app'
+
+
+def build_inline_assets(css_files=(), js_files=()):
+	styles = []
+	for relative_path in css_files:
+		asset_path = ASSET_DIR / 'css' / relative_path
+		styles.append(asset_path.read_text(encoding='utf-8'))
+
+	scripts = []
+	for relative_path in js_files:
+		asset_path = ASSET_DIR / 'js' / relative_path
+		scripts.append(asset_path.read_text(encoding='utf-8'))
+
+	return {
+		'inline_styles': '\n'.join(styles),
+		'inline_scripts': '\n'.join(scripts),
+	}
+
+
 def home_view(request):
-	return render(request, 'index.html')
+	context = build_inline_assets(css_files=('style.css', 'home.css'), js_files=('main.js',))
+	return render(request, 'index.html', context)
 
 
 def auth_view(request):
-	return render(request, 'auth.html')
+	context = build_inline_assets(css_files=('style.css', 'pages.css'), js_files=('main.js', 'auth.js'))
+	return render(request, 'auth.html', context)
 
 
 def dashboard_view(request):
-	return render(request, 'dashboard.html')
+	context = build_inline_assets(css_files=('style.css', 'pages.css'), js_files=('main.js', 'pages.js'))
+	return render(request, 'dashboard.html', context)
 
 
 def result_view(request):
-	return render(request, 'result.html')
+	context = build_inline_assets(css_files=('style.css', 'pages.css'), js_files=('main.js', 'pages.js'))
+	return render(request, 'result.html', context)
 
 
 def quiz_view(request):
 	quiz = Quiz.objects.filter(is_active=True).first()
-	return render(request, 'quiz.html', {'quiz': quiz})
+	context = {'quiz': quiz}
+	context.update(build_inline_assets(css_files=('style.css', 'pages.css'), js_files=('main.js', 'quiz.js')))
+	return render(request, 'quiz.html', context)
 
 
 def quiz_questions_api(request, slug):
